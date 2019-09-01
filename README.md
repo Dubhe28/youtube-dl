@@ -1,4 +1,4 @@
-youtube-dl - a modified version of youtube-dl which was forked from https://github.com/ytdl-org/youtube-dl.
+A modified version of youtube-dl which was forked from https://github.com/ytdl-org/youtube-dl.
 This version of youtube-dl includes options of downloading basic video information and comments of a video. 
 
 - [DESCRIPTION](#description)
