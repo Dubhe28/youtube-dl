@@ -28,6 +28,11 @@ import random
 
 from string import ascii_letters
 
+# modified by Dubhe28 - start
+import pandas as pd
+import csv
+from .youtube_comments_dl import YoutubeCommentsDL
+# modified by Dubhe28 - end
 from .compat import (
     compat_basestring,
     compat_cookiejar,
@@ -291,6 +296,11 @@ class YoutubeDL(object):
     geo_bypass_ip_block:
                        IP range in CIDR notation that will be used similarly to
                        geo_bypass_country
+    # modified by Dubhe28 - start
+    download_info:     Download the video information
+    download_comments: Download the video comments using YouTube API key
+    youtube_api_key:   Save this YouTube API Key and exit.
+    # modified by Dubhe28 - end
 
     The following options determine which downloader is picked:
     external_downloader: Executable of the external downloader to call.
@@ -357,6 +367,32 @@ class YoutubeDL(object):
         }
         self.params.update(params)
         self.cache = Cache(self)
+
+        # modified by Dubhe28 - start
+        '''
+        if self.params.get('youtube_api_key') is not None:
+            api_key = self.params.get('youtube_api_key')
+            try:
+                with open('youtube_api_key.txt', 'w') as f:
+                    f.write(api_key)
+            except:
+                print("ERROR: Failed to save YouTube API Key in 'youtube_api_key.txt")
+            print("Saved your YouTube API Key in 'youtube_api_key.txt'")
+            exit()
+        '''
+        if self.params.get('download_comments'):
+            try:
+                with open('youtube_api_key.txt', 'r') as f:
+                    api_key = f.read()
+                    if "[YOUR_API_KEY]" in api_key:
+                        raise ValueError
+                    self.ytcommentsdl = YoutubeCommentsDL(api_key=api_key)
+            except:
+                print("ERROR: Please give your Youtube API key in the text file 'youtube_api_key.txt'")
+                exit()
+        else:
+            self.ytcommentsdl = None
+        # modified by Dubhe28 - end
 
         def check_deprecated(param, option, suggestion):
             if self.params.get(param) is not None:
@@ -760,6 +796,16 @@ class YoutubeDL(object):
                     return ret
 
         return None
+
+    # modified by Dubhe28 - start
+    @staticmethod
+    def get_video_info(info_dict, selected_info):
+        '''Get the basic information of a video from info dict'''
+        video_info = {k: v for k, v in info_dict.items() if k in selected_info}
+        video_info = pd.DataFrame.from_dict([video_info])
+        video_info = video_info[selected_info]
+        return video_info
+    # modified by Dubhe28 - end
 
     @staticmethod
     def add_extra_info(info_dict, extra_info):
@@ -1714,6 +1760,39 @@ class YoutubeDL(object):
         if reason is not None:
             self.to_screen('[download] ' + reason)
             return
+
+        # modified by Dubhe28 - start
+        # the option to download the basic video information
+        if self.params.get('download_info'):
+            selected_info = ['id', 'title', 'view_count', 'like_count', 'dislike_count', 'upload_date', 'uploader',
+                             'uploader_id', 'webpage_url']
+            df = self.get_video_info(info_dict, selected_info)
+
+            # append the video information to the video_info.csv
+            filename = 'video_info/video_info.csv'
+
+            if not os.path.isfile(filename):
+                with open(filename, 'w', newline='') as file:
+                    wr = csv.writer(file, quoting=csv.QUOTE_ALL)
+                    wr.writerow(selected_info)
+
+            df_prev = pd.read_csv(filename, encoding="utf-8-sig")
+
+            df = df_prev.append(df)
+            df = df.drop_duplicates(['id'], keep='first')
+            df.to_csv(filename, mode="w", index=False, encoding="utf-8-sig")
+            print("[download] Saved basic video information in 'video_info/video_info.csv'")
+
+        # the option to download the video comments
+        if info_dict['extractor'] == "youtube" and self.ytcommentsdl is not None:
+            vid = info_dict['id']
+            print("[download] Downloading video comments:", info_dict['title'])
+            df = self.ytcommentsdl.get_video_comment(vid, max_page=50)
+            comments_filename = 'video_comments/' + vid + '.csv'
+            df.to_csv(comments_filename, mode="w", index=False, encoding="utf-8-sig")
+            print("[download] Finished downloading the video comments in 'video_comments/", vid, ".csv'", sep="")
+
+        # modified by Dubhe28 - end
 
         self._num_downloads += 1
 

@@ -38,6 +38,7 @@ updates_key.pem
 *.part
 *.ytdl
 *.swp
+*.webm
 test/local_parameters.json
 .tox
 youtube-dl.zsh
@@ -51,3 +52,7 @@ venv/
 
 # VS Code related files
 .vscode
+
+# Downloaded video information file
+video_info/video_info.csv
+video_comments/*.csv

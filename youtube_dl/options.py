@@ -198,6 +198,29 @@ def parseOpts(overrideArguments=None):
         action='store_true', dest='no_color',
         default=False,
         help='Do not emit color codes in output')
+    # modified by Dubhe28 - start
+    general.add_option(
+        '-b', '--download-info',
+        action='store_true', dest='download_info',
+        default=False,
+        help="Download the basic video information"
+    )
+    general.add_option(
+        '-d', '--download-comments',
+        action='store_true', dest='download_comments',
+        default=False,
+        help="Download the video comments using YouTube API Key in 'youtube_api_key.txt'"
+    )
+    '''
+    general.add_option(
+        '-y', '--youtube-api-key',
+        action='store', dest='youtube_api_key',
+        metavar='API_KEY', type='str',
+        help="Save this YouTube API Key and exit"
+    )
+    '''
+    # modified by Dubhe28 - end
+
 
     network = optparse.OptionGroup(parser, 'Network Options')
     network.add_option(

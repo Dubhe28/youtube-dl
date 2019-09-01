@@ -436,6 +436,11 @@ def _real_main(argv=None):
         # just for deprecation check
         'autonumber': opts.autonumber if opts.autonumber is True else None,
         'usetitle': opts.usetitle if opts.usetitle is True else None,
+        # modified by Dubhe28 - start
+        'download_info': opts.download_info,
+        'download_comments': opts.download_comments,
+        # 'youtube_api_key': opts.youtube_api_key,
+        # modified by Dubhe28 - end
     }
 
     with YoutubeDL(ydl_opts) as ydl:
