@@ -56,3 +56,6 @@ venv/
 # Downloaded video information file
 video_info/video_info.csv
 video_comments/*.csv
+
+# YouTube API Key file
+youtube_api_key.txt
