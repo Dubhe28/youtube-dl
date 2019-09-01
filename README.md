@@ -46,12 +46,10 @@ Useful options from the original repository:
     -x, --extract-audio              Convert video files to audio-only files
                                      (requires ffmpeg or avconv and ffprobe or
                                      avprobe)
-    -o, --output TEMPLATE            Output filename template, see the "OUTPUT TEMPLATE"
-                                     (https://github.com/ytdl-org/youtube-dl/blob/master/README.md#output-template) 
-                                     for all the info
-    -f, --format FORMAT              Video format code, see the "FORMAT SELECTION"
+    -o, --output TEMPLATE            Output filename template, see the "OUTPUT TEMPLATE" for all the info
+                                     (https://github.com/ytdl-org/youtube-dl/blob/master/README.md#output-template)
+    -f, --format FORMAT              Video format code, see the "FORMAT SELECTION" for all the info
                                      (https://github.com/ytdl-org/youtube-dl/blob/master/README.md#format-selection)
-                                     for all the info
                                      
                                      
 # USAGE
