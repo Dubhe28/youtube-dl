@@ -1763,10 +1763,13 @@ class YoutubeDL(object):
 
         # modified by Dubhe28 - start
         # the option to download the basic video information
-        if self.params.get('download_info'):
+        if info_dict['extractor'] == "youtube" and self.params.get('download_info'):
             selected_info = ['id', 'title', 'view_count', 'like_count', 'dislike_count', 'upload_date', 'uploader',
                              'uploader_id', 'webpage_url']
             df = self.get_video_info(info_dict, selected_info)
+
+            if not os.path.exists('video_info'):
+                os.makedirs('video_info')
 
             # append the video information to the video_info.csv
             filename = 'video_info/video_info.csv'
@@ -1788,6 +1791,8 @@ class YoutubeDL(object):
             vid = info_dict['id']
             print("[download] Downloading video comments:", info_dict['title'])
             df = self.ytcommentsdl.get_video_comment(vid, max_page=50)
+            if not os.path.exists('video_comments'):
+                os.makedirs('video_comments')
             comments_filename = 'video_comments/' + vid + '.csv'
             df.to_csv(comments_filename, mode="w", index=False, encoding="utf-8-sig")
             print("[download] Finished downloading the video comments in 'video_comments/", vid, ".csv'", sep="")
