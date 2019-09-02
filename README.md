@@ -14,7 +14,7 @@ This version of youtube-dl includes options of downloading basic video informati
     
 ## MODIFICATION
 
-This version of youtube-dl was modified to include the options to download basic video information(id, title, view_count, like_count, dislike_count, upload_date, uploader, uploader_id, webpage_url) and to download the comments of the video while downloading the video. The new options can be used only on videos from YouTube.com. 'YouTube DATA API (v3)' was used to download video comments.
+This version of youtube-dl was modified to include the options to download basic video information(id, title, view_count, like_count, dislike_count, upload_date, uploader, uploader_id, webpage_url) and to download the comments of the video while downloading the video. The new options can be used only on videos from YouTube.com. **YouTube DATA API (v3)** was used to download video comments.
 
 The basic video information will be downloaded with the video using '-b' or '--download-info' option. Using the '--download-comments' option, the video comments would be downloaded with the video.  
 
